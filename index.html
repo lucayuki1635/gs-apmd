@@ -1,0 +1,100 @@
+<!DOCTYPE html> 
+<html lang="pt-br">
+<head>
+	<meta charset="UTF-8">
+	
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./statics/css/style.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css"/>
+	<title>Gerenciamento de Água</title>
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+           <a class="navbar-brand" href="#">Fiap Store</a>
+           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+           <span class="navbar-toggler-icon"></span>
+           </button>
+           <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                 <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                 </li>
+                 <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Jogos  
+                    </a>
+                    <ul class="dropdown-menu">
+                       <li><a class="dropdown-item" id="concluidas" href="#">Lançados</a></li>
+                       <li><a class="dropdown-item" id="pendentes" href="#">Esperando Release</a></li>
+                       <li>
+                          <hr class="dropdown-divider">
+                       </li>
+                       <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal">Cadastrar</a></li>
+                    </ul>
+                 </li>
+              </ul>
+              <form class="d-flex" role="search">
+                 <input id="busca" class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search">
+                 <button class="btn btn-outline-success" type="submit">Buscar</button>
+              </form>
+           </div>
+        </div>
+     </nav>
+     
+     <div class="container">
+      <div class="calendario">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th colspan="4">
+                <div class="titulo-calendario">
+                  <button id="ano-anterior-btn"><i class="bi bi-arrow-left"></i></button>
+                  <h2 id="ano"></h2>
+                  <button id="ano-posterior-btn"><i class="bi bi-arrow-right"></i></button>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td id="1" class="mes">Jan</td>
+              <td id="2" class="mes">Fev</td>
+              <td id="3" class="mes">Mar</td>
+              <td id="4" class="mes">Abr</td>
+            </tr>
+            <tr>
+              <td id="5" class="mes">Mai</td>
+              <td id="6" class="mes">Jun</td>
+              <td id="7" class="mes">Jul</td>
+              <td id="8" class="mes">Ago</td>
+            </tr>
+            <tr>
+              <td id="9" class="mes">Set</td>
+              <td id="10" class="mes">Nov</td>
+              <td id="11" class="mes">Out</td>
+              <td id="12" class="mes">Dez</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
+   
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+      crossorigin="anonymous"
+    ></script>
+	<script src="./statics/js/script.js"></script>
+   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </body>
+
+</html>
+
+
