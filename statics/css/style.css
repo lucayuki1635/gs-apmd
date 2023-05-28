@@ -8,12 +8,12 @@
   }
 
 
-  .titulo-calendario {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 1.25rem;
-  }
+.titulo-calendario {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
   
 .titulo-calendario button {
 background: none;
@@ -49,4 +49,20 @@ color: white;
 #anoCalendario {
 margin-top: 0.5rem;
 align-self: center;
+}
+
+.mes-container {
+  border: 0.1rem solid #ccc;
+  border-radius: 0.9rem;
+  overflow: hidden;
+  margin-top: -1rem;
+}
+
+.mes-content {
+  overflow: hidden;
+  transition: max-height 0.5s ease;
+}
+
+.mes-content.active {
+  transition: max-height 0.5s ease;
 }

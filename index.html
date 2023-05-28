@@ -61,30 +61,69 @@
           </thead>
           <tbody>
             <tr>
-              <td id="1" class="mes">Jan</td>
-              <td id="2" class="mes">Fev</td>
-              <td id="3" class="mes">Mar</td>
-              <td id="4" class="mes">Abr</td>
+              <td id="1" class="mes" onclick="ativarDropdownMes(this.id)">Jan</td>
+              <td id="2" class="mes" onclick="ativarDropdownMes(this.id)">Fev</td>
+              <td id="3" class="mes" onclick="ativarDropdownMes(this.id)">Mar</td>
+              <td id="4" class="mes" onclick="ativarDropdownMes(this.id)">Abr</td>
             </tr>
             <tr>
-              <td id="5" class="mes">Mai</td>
-              <td id="6" class="mes">Jun</td>
-              <td id="7" class="mes">Jul</td>
-              <td id="8" class="mes">Ago</td>
+              <td id="5" class="mes" onclick="ativarDropdownMes(this.id)">Mai</td>
+              <td id="6" class="mes" onclick="ativarDropdownMes(this.id)">Jun</td>
+              <td id="7" class="mes" onclick="ativarDropdownMes(this.id)">Jul</td>
+              <td id="8" class="mes" onclick="ativarDropdownMes(this.id)">Ago</td>
             </tr>
             <tr>
-              <td id="9" class="mes">Set</td>
-              <td id="10" class="mes">Nov</td>
-              <td id="11" class="mes">Out</td>
-              <td id="12" class="mes">Dez</td>
+              <td id="9" class="mes" onclick="ativarDropdownMes(this.id)">Set</td>
+              <td id="10" class="mes" onclick="ativarDropdownMes(this.id)">Nov</td>
+              <td id="11" class="mes" onclick="ativarDropdownMes(this.id)">Out</td>
+              <td id="12" class="mes" onclick="ativarDropdownMes(this.id)">Dez</td>
             </tr>
           </tbody>
         </table>
+        <div class="mes-container rounded">
+          <div class="mes-content">
+            <div class="collapse" id="dadosMes">
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
 
-   
+    <div class="container">
+      <!-- Modal -->
+      	<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+				<h1 class="modal-title fs-5" id="exampleModalLabel">Cadastrar Consumo</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+				<div class="row">
+          <div class="form-group row">
+            <label for="colFormLabelSm" class="col-sm-6 col-form-label col-form-label-sm">Consumo (L)</label>
+            <div class="col-12 mb-1">
+              <input id="consumo" type="text" class="form-control" placeholder="Consumo em Litros" aria-label="consumo">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="colFormLabelSm" class="col-sm-6 col-form-label col-form-label-sm">Valor m³</label>
+            <div class="col-12 mb-1">
+              <input id="valor" type="text" class="form-control" placeholder="Valor do m³ de água" aria-label="valor">
+            </div>
+          </div>
+				</div>
+				</div>
+				<div class="modal-footer">
+               <p id="alerts-modal"></p>
+				   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+				   <button id="salvar" type="button" class="btn btn-primary">Salvar</button>
+				</div>
+			</div>
+			</div>
+		</div>
+	</div>
 
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
