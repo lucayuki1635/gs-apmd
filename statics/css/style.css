@@ -42,8 +42,8 @@ cursor: not-allowed;
 }
 
 .mes.selecionado {
-background-color: blue;
-color: white;
+background-color: #0000FF;
+color: #fff;
 }
 
 #anoCalendario {
@@ -65,4 +65,34 @@ align-self: center;
 
 .mes-content.active {
   transition: max-height 0.5s ease;
+}
+
+.hide-container{
+  display: none;
+}
+
+.centralizar-texto{
+  text-align: center;
+}
+
+.tamanho-alerta{
+  margin: auto;
+  max-width: 23rem;
+}
+
+.alto-consumo{
+  color: #ff0000;
+}
+
+.baixo-consumo{
+  color: #32CD32;
+}
+
+.consumo-na-media{
+  color:#525050;
+}
+
+.centralizar-botao{
+  display: flex;
+  justify-content: center;
 }
