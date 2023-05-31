@@ -274,7 +274,7 @@ function buscarCalendario(){
 }
 
 function atualizar(){
-	let temp = document.querySelector('.teste')
+	let temp = document.querySelector('.meses-card')
 	let ano_anterior =''
     temp.innerHTML = ""
 	temporario.sort(function(a, b) {
@@ -285,7 +285,7 @@ function atualizar(){
 		}
 	  })
 	temporario.forEach((mes) => {
-        document.querySelector(".teste").innerHTML += gerarCard(mes, ano_anterior)
+        document.querySelector(".meses-card").innerHTML += gerarCard(mes, ano_anterior)
 		ano_anterior = mes.ano
     
     })    
@@ -369,11 +369,18 @@ function carregarModal() {
 	for (let i = 0; i < qtd_inpt; i++) {
 		modal_faixas.innerHTML +=`<div class="col-12 mb-1">
 			<label id="titulo${i}" for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm"></label>
-			<input id="valor${i}" type="text" class="form-control valor-m3" placeholder="Valor do m³ para ${faixas[i]} m³ de água" aria-label="valor">
+			<div class="input-group mb-2 mr-sm-2">
+				<div class="input-group-prepend">
+				<div class="input-group-text">R$</div>
+				</div>
+				<input id="valor${i}" type="text" class="form-control valor-m3" disabled placeholder="Valor do m³ para ${faixas[i]} m³ de água" aria-label="valor">
+			</div>
+			
 		</div>`
 		if(i==0){
 			document.getElementById(`valor${i}`).classList.add("obrigatorio")
 			document.getElementById(`titulo${i}`).innerHTML = `Valor fixo para ${faixas[i]}m³ (obrigatório)`
+			document.getElementById(`valor${i}`).disabled = false
 		}
 	}
 	atualizarModal()
@@ -393,8 +400,9 @@ function atualizarModal(){
 	}
 
 	for (let i = 1; i < faixas.length; i++) {
-		document.getElementById(`titulo${i}`).innerHTML = `Valor do m³ para ${faixas[i]}m³ (opcional)`
+		document.getElementById(`titulo${i}`).innerHTML = `Valor do m³ para ${faixas[i]}m³`
 		document.getElementById(`valor${i}`).classList.add("opcional")
+		document.getElementById(`valor${i}`).disabled = true
 		document.getElementById(`valor${i}`).classList.remove("obrigatorio")
 	}
 
@@ -406,6 +414,7 @@ function atualizarModal(){
 			document.getElementById(`valor${i}`).classList.remove("opcional")
 			document.getElementById(`valor${i}`).classList.add("obrigatorio")
 			document.getElementById(`titulo${i}`).innerHTML = `Valor do m³ para ${faixas[i]}m³ (obrigatório)`
+			document.getElementById(`valor${i}`).disabled = false
 		}
 		
 	}
