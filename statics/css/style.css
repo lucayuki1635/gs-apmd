@@ -96,3 +96,10 @@ align-self: center;
   display: flex;
   justify-content: center;
 }
+
+.centralizar-texto{
+  color:#525050;
+  display: flex;
+  justify-content: center;
+  font-size: 0.9rem;
+}
