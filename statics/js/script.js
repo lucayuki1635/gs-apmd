@@ -20,6 +20,9 @@ window.addEventListener("load", ()=> {
 document.getElementById('ano-anterior-btn').addEventListener('click', voltarAno)
 document.getElementById('ano-posterior-btn').addEventListener('click', avancarAno)
 document.querySelector("#salvar").addEventListener("click", cadastrar)
+document.getElementById("flexRadioDefault2").addEventListener("change",carregarModal)
+document.getElementById("flexRadioDefault1").addEventListener("change",carregarModal)
+document.querySelector("#consumo").addEventListener("keyup", atualizarModal)
 
 //TROCA DE ANO
 function avancarAno(){
@@ -45,17 +48,24 @@ function atualizarAno(ano) {
 //Manipular localStorage
 function cadastrar(){
 	const modal = bootstrap.Modal.getInstance(document.querySelector("#exampleModal"))
-	let valor = document.querySelector("#valor").value
 	let consumo = document.querySelector("#consumo").value
+	let faixas_obrigatorias = document.querySelectorAll(".obrigatorio")
+	let todas_true = true
+	let valores_das_faixas = []
+	let qtd_faixas = 4
+
+	faixas_obrigatorias.forEach(function(valor){
+		if(verificarFloat(valor.value)==false){
+			todas_true = false
+			valor.classList.add("is-invalid")
+		}else{
+			valores_das_faixas.push(parseFloat(valor.value))
+			valor.classList.remove("is-invalid")
+		}
+	})
 
 	consumo = verificarFloat(consumo)
-	valor = verificarFloat(valor)
 
-	if (valor==false){
-		document.querySelector("#valor").classList.add("is-invalid")
-	}else{
-		document.querySelector("#valor").classList.remove("is-invalid")
-	}
 
 	if (consumo==false){
 		document.querySelector("#consumo").classList.add("is-invalid")
@@ -63,22 +73,34 @@ function cadastrar(){
 		document.querySelector("#consumo").classList.remove("is-invalid")
 	}
 
-	if(consumo==false || valor==false){
+	if(consumo==false || todas_true==false){
 		return
 	}
+
+	if(document.getElementById("flexRadioDefault2").checked){
+		qtd_faixas = 5
+	}
+
+
 
 	const mes_dict = {
 		id: id_temp,
 		consumo,
-		valor,
+		valor: valorTotal(valores_das_faixas, consumo),
 		mes_nome: meses_nome[mes_selecionado-1],
 		mes_id: mes_selecionado,
 		ano: anoSelecionado,
-		ano_mes: meses_nome[mes_selecionado-1]+"/"+anoSelecionado
+		ano_mes: meses_nome[mes_selecionado-1]+"/"+anoSelecionado,
+		valores_das_faixas,
+		qtd_faixas
 	}
 	registro_meses.push(mes_dict)
 
-	document.querySelector("#valor").value = ''
+	document.querySelectorAll(".valor-m3").forEach(function(input){
+		input.value = ""
+	})
+	
+	
 	document.querySelector("#consumo").value = ''
 	
 	salvar()
@@ -119,7 +141,7 @@ function ativarDropdownMes(id_mes) {
 		let mes_encontrado = registro_meses.find(mes_dict => mes_dict.id === id_temp)
 		if(mes_encontrado==undefined){
 		dadosMes.innerHTML = `<div class="container mt-2 mb-2">
-		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" onClick='carregarModal()'>
 			Cadastrar Consumo
 		</button>
 		</div>`
@@ -142,33 +164,37 @@ function desativarDropdownMes(){
 function updateDropdownMes(informacoes){
 	let dadosMes = document.getElementById('dadosMes');
 	let media_anual =  mediaAnual(anoSelecionado)
+
 	dadosMes.innerHTML =`
 	<div class="card w-100">
 		<div class="card-body">
 		<h5 class="card-title">${informacoes.mes_nome}/${anoSelecionado}</h5>
 		<p class="card-text">
-		<h6 class="card-title">Informações mensais:</h6>
-		<span>Consumo em litros: ${informacoes.consumo}L</span>
-		<br>
-		<span>Consumo em m³: ${informacoes.consumo/1000}m³</span>
-		<br>
-		<span>Valor do m³: R$${informacoes.valor.toFixed(2)}</span>
-		<br>
-		<span>Total pago: R$${((informacoes.consumo/1000)*informacoes.valor).toFixed(2)}</span>
+			<h6 class="card-title">Informações mensais:</h6>
+			<span>Consumo em litros: ${(informacoes.consumo*1000).toFixed(2)}L</span>
+			<br>
+			<span>Consumo em m³: ${informacoes.consumo.toFixed(2)}m³</span>
+			<br>
+			<span>Total pago: R$${informacoes.valor.toFixed(2)}</span>
 		</p>
 		<p class="card-text">
-		<h6 class="card-title">Comparação Mês x Ano:</h6>
-		<span>Média anual de consumo: ${media_anual.toFixed(2)}L</span>
-		<br>
-		<span>Média anual de consumo em m³: ${(media_anual/1000).toFixed(2)}m³</span>
-		<br>
-		<span>Consumo mensal em relação ao consumo anual: ${mediaMaiorMenor(media_anual, informacoes)}</span>
+			<h6 class="card-title">Comparação Mês x Ano:</h6>
+			<span>Média anual de consumo: ${(media_anual*1000).toFixed(2)}L</span>
+			<br>
+			<span>Média anual de consumo em m³: ${(media_anual).toFixed(2)}m³</span>
+			<br>
+			<span>Consumo mensal em relação ao consumo anual: ${mediaMaiorMenor(media_anual, informacoes)}</span>
+		</p>
+		<p class="card-text tabela-faixa">
+			<h6 class="card-title">Valor pago por faixa:</h6>
+			${valorDeFaixa(informacoes)}
 		</p>
 		<a href="#" class="btn btn-primary" onClick='desativarDropdownMes(); limparSelecaoMes()'>Fechar</a>
 		<a href="#" class="btn btn-danger" onClick='apagar("${informacoes.id}")'><i class="bi bi-trash3-fill"></i></i></a>
 		</div>
 	</div>
 	`
+
 }
 
 //Calculo médias
@@ -275,13 +301,14 @@ document.querySelector('#busca').addEventListener("keyup", ()=>{
 function gerarCard(informacoes, ano_anterior){
 	let media_anual =  mediaAnual(informacoes.ano)
 	let base_hmtl = ``
+	
 	if(ano_anterior != informacoes.ano) {
 		base_hmtl += `
 		<br>
 		<div class="centralizar-texto">
 			<h3>${informacoes.ano}</h3>
 			<div class="alert alert alert-primary tamanho-alerta" role="alert">
-				<span>Média anual de consumo: ${media_anual.toFixed(2)}L ou ${(media_anual/1000).toFixed(2)}m³</span>
+				<span>Média anual de consumo: ${(media_anual).toFixed(2)}m³</span>
 			</div>
 		</div>
 		`
@@ -296,18 +323,20 @@ function gerarCard(informacoes, ano_anterior){
 				<h5 class="card-title">${informacoes.mes_nome}/${informacoes.ano}</h5>
 			</div>
 			<p class="card-text">
-			<h6 class="card-title">Informações mensais:</h6>
-			<span>Consumo em litros: ${informacoes.consumo}L</span>
-			<br>
-			<span>Consumo em m³: ${informacoes.consumo/1000}m³</span>
-			<br>
-			<span>Valor do m³: R$${informacoes.valor.toFixed(2)}</span>
-			<br>
-			<span>Total pago: R$${((informacoes.consumo/1000)*informacoes.valor).toFixed(2)}</span>
+				<h6 class="card-title">Informações mensais:</h6>
+				<span>Consumo em litros: ${(informacoes.consumo*1000).toFixed(2)}L</span>
+				<br>
+				<span>Consumo em m³: ${(informacoes.consumo).toFixed(2)}m³</span>
+				<br>
+				<span>Total pago: R$${informacoes.valor.toFixed(2)}</span>
 			</p>
 			<p class="card-text">
-			<h6 class="card-title">Comparação Mês x Ano:</h6>
-			<span>Consumo mensal em relação ao consumo anual: ${mediaMaiorMenor(media_anual, informacoes)}</span>
+				<h6 class="card-title">Comparação Mês x Ano:</h6>
+				<span>Consumo mensal em relação ao consumo anual: ${mediaMaiorMenor(media_anual, informacoes)}</span>
+			</p>
+			<p class="card-text tabela-faixa">
+				<h6 class="card-title">Valor pago por faixa:</h6>
+				${valorDeFaixa(informacoes)}
 			</p>
 			<a href="#" class="btn btn-danger" onClick='apagar("${informacoes.id}")'><i class="bi bi-trash3-fill"></i></i></a>
 		</div>
@@ -322,3 +351,140 @@ function fecharDropdown(){
 }
 
 verificarMesesFuturos(anoSelecionado)
+
+function carregarModal() { 
+	let modal_faixas = document.getElementById("input-faixas")
+	let opcao1 = document.getElementById("flexRadioDefault1")
+	let opcao2 = document.getElementById("flexRadioDefault2")
+	let qtd_inpt = 4
+	let faixas = []
+	if (opcao1.checked){
+		qtd_inpt = 4
+		faixas = ["0 a 10", "11 a 20", "21 a 50", "acima de 50"]
+	}else if(opcao2.checked){
+		qtd_inpt = 5
+		faixas = ["0 a 10", "11 a 20", "21 a 30", "31 a 50","acima de 50"]
+	}
+	modal_faixas.innerHTML = ""
+	for (let i = 0; i < qtd_inpt; i++) {
+		modal_faixas.innerHTML +=`<div class="col-12 mb-1">
+			<label id="titulo${i}" for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm"></label>
+			<input id="valor${i}" type="text" class="form-control valor-m3" placeholder="Valor do m³ para ${faixas[i]} m³ de água" aria-label="valor">
+		</div>`
+		if(i==0){
+			document.getElementById(`valor${i}`).classList.add("obrigatorio")
+			document.getElementById(`titulo${i}`).innerHTML = `Valor fixo para ${faixas[i]}m³ (obrigatório)`
+		}
+	}
+	atualizarModal()
+}
+
+function atualizarModal(){
+	let consumo = document.querySelector("#consumo").value
+	let consumo_float = verificarFloat(consumo)
+	let faixas = []
+
+	
+
+	if (document.getElementById("flexRadioDefault1").checked){
+		faixas = ["0 a 10", "11 a 20", "21 a 50", "50 ou mais "]
+	}else{
+		faixas = ["0 a 10", "11 a 20", "21 a 30", "31 a 50","50 ou mais "]
+	}
+
+	for (let i = 1; i < faixas.length; i++) {
+		document.getElementById(`titulo${i}`).innerHTML = `Valor do m³ para ${faixas[i]}m³ (opcional)`
+		document.getElementById(`valor${i}`).classList.add("opcional")
+		document.getElementById(`valor${i}`).classList.remove("obrigatorio")
+	}
+
+
+	if(consumo_float != false) {
+		consumo = parseFloat(consumo)
+		let indexs = valoresRequeridos(consumo)
+		for (let i = 1; i < indexs+1; i++) {
+			document.getElementById(`valor${i}`).classList.remove("opcional")
+			document.getElementById(`valor${i}`).classList.add("obrigatorio")
+			document.getElementById(`titulo${i}`).innerHTML = `Valor do m³ para ${faixas[i]}m³ (obrigatório)`
+		}
+		
+	}
+
+	document.querySelectorAll(".opcional").forEach(function(inp){
+		inp.classList.remove("is-invalid")
+	})
+}
+
+
+function valoresRequeridos(consumo) {
+	let valores = null
+	
+	if(consumo >= 0 && consumo <= 10){
+		valores = 0
+	}else if (consumo >= 11 && consumo <= 20){
+		valores = 1
+	}
+
+	if (document.getElementById("flexRadioDefault1").checked){
+		if (consumo >= 21 && consumo <= 50){
+			valores = 2
+		}else if (consumo >= 51){
+			valores = 3
+		}
+	}else{
+		if (consumo >= 21 && consumo <= 30){
+			valores = 2
+		}else if (consumo >= 31 && consumo <= 50){
+			valores = 3
+		}else if (consumo >= 51){
+			valores = 4
+		}
+	}
+	return valores
+
+}
+
+function valorTotal(valores, consumo){
+	let total = 0
+	if(valores.length == 1){
+		total = valores[0]
+	}else if(valores.length == 2){
+		total = valores[0]+((consumo-10)*valores[1])
+	}else if(valores.length >= 3){
+		if (document.getElementById("flexRadioDefault1").checked){
+			if (valores.length == 3){
+				total = valores[0]+(10*valores[1])+((consumo-20)*valores[2])
+			}else if (valores.length == 4){
+				total = valores[0]+(10*valores[1])+(30*valores[2])+((consumo-50)*valores[3])
+			}
+		}else{
+			if (valores.length == 3){
+				total = valores[0]+(10*valores[1])+((consumo-20)*valores[2])
+			}else if (valores.length == 4){
+				total = valores[0]+(10*valores[1])+(10*valores[2])+((consumo-30)*valores[3])
+			}else if (valores.length == 5){
+				total = valores[0]+(10*valores[1])+(10*valores[2])+(20*valores[3])+((consumo-50)*valores[4])
+			}
+		}
+	}
+	return total
+}
+
+function valorDeFaixa(informacoes){
+	let tabela_faixas = ''
+	let faixas = []
+	if (informacoes.qtd_faixas == 4){
+		faixas = ["0 a 10", "11 a 20", "21 a 50", "acima de 50"]
+	}else if(informacoes.qtd_faixas == 5){
+		faixas = ["0 a 10", "11 a 20", "21 a 30", "31 a 50","acima de 50"]
+	}
+
+	for(let i=0; i<informacoes.valores_das_faixas.length;i++){
+		if(i==0){
+			tabela_faixas +=`<span>Valor fixo (${faixas[i]}m³): R$${informacoes.valores_das_faixas[i].toFixed(2)}</span><br>`
+		}else{
+			tabela_faixas +=`<span>Valor de ${faixas[i]}m³: R$${informacoes.valores_das_faixas[i].toFixed(2)}</span><br>`
+		}
+	}
+	return tabela_faixas
+}

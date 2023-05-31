@@ -93,16 +93,31 @@
 				<div class="modal-body">
 				<div class="row">
           <div class="form-group row">
-            <label for="colFormLabelSm" class="col-sm-6 col-form-label col-form-label-sm">Consumo (L)</label>
             <div class="col-12 mb-1">
+              <label for="colFormLabelSm" class="col-sm-6 col-form-label col-form-label-sm">Consumo (m³)</label>
               <input id="consumo" type="text" class="form-control" placeholder="Consumo em Litros" aria-label="consumo">
             </div>
-            
-          </div>
-          <div class="form-group row">
-            <label for="colFormLabelSm" class="col-sm-6 col-form-label col-form-label-sm">Valor m³</label>
             <div class="col-12 mb-1">
-              <input id="valor" type="text" class="form-control" placeholder="Valor do m³ de água" aria-label="valor">
+              <label for="colFormLabelSm" class="col-sm-6 col-form-label col-form-label-sm">Faixas de consumo: </label>
+            </div>
+            <div class="col-6 mb-1">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
+                <label class="form-check-label" for="flexRadioDefault1">
+                  4 faixas
+                </label>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                <label class="form-check-label" for="flexRadioDefault2">
+                  5 faixas
+                </label>
+              </div>
+            </div>
+            <div id="input-faixas">
+              
             </div>
           </div>
 				</div>
@@ -120,7 +135,7 @@
   <div class="container hide-container" id="tela-busca">
     <form class="d-flex" role="search">
       <input id="busca" class="form-control me-2" type="search" placeholder="Buscar mês, ano ou mês/ano" aria-label="Search">
-      <button type="button" class="btn btn-outline-primary" onclick="buscarCalendario()" >Retornar ao caléndario</button>
+      <button type="button" class="btn btn-outline-primary" onclick="buscarCalendario()" ><i class="bi bi-calendar2-week"></i></button>
    </form>
     <br>
     <div class="centralizar-botao">
