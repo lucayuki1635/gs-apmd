@@ -305,8 +305,9 @@ function gerarCard(informacoes, ano_anterior){
 	if(ano_anterior != informacoes.ano) {
 		base_hmtl += `
 		<br>
-		<div class="centralizar-texto">
-			<h3>${informacoes.ano}</h3>
+		<h3 class="centralizar-botao">${informacoes.ano}</h3>
+		<div class="centralizar-botao">
+			
 			<div class="alert alert alert-primary tamanho-alerta" role="alert">
 				<span>Média anual de consumo: ${(media_anual).toFixed(2)}m³</span>
 			</div>

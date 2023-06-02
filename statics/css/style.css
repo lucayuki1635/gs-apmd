@@ -95,11 +95,13 @@ align-self: center;
 .centralizar-botao{
   display: flex;
   justify-content: center;
+  text-align: center;
 }
 
 .centralizar-texto{
-  color:#525050;
+  color: #525050;
   display: flex;
   justify-content: center;
   font-size: 0.9rem;
+  text-align: center;
 }
