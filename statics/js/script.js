@@ -32,6 +32,9 @@ document.getElementById("maior-menor-metros").addEventListener("change", filtroB
 //TROCA DE ANO
 function avancarAno(){
     anoSelecionado++
+	if (anoSelecionado > 2000){
+		document.getElementById('ano-anterior-btn').disabled = false
+	}
     limparSelecaoMes()
     atualizarAno(anoSelecionado)
     verificarMesesFuturos(anoSelecionado)
@@ -40,6 +43,9 @@ function avancarAno(){
 
 function voltarAno(){
     anoSelecionado--
+	if (anoSelecionado == 2000){
+		document.getElementById('ano-anterior-btn').disabled = true
+	}
     limparSelecaoMes()
     atualizarAno(anoSelecionado)
     verificarMesesFuturos(anoSelecionado)
@@ -276,12 +282,10 @@ meses.forEach(function(mes) {
 
 
 function buscarCalendario(){
-	let div_calendario = document.getElementById('calendario')
-	let div_busca = document.getElementById('tela-busca')
+	document.getElementById('calendario').classList.toggle('hide-container')
+	document.getElementById('tela-busca').classList.toggle('hide-container')
 	document.getElementById("maior-menor-reais").value = "1"
 	document.getElementById("maior-menor-metros").value = "1"
-	div_calendario.classList.toggle('hide-container')
-	div_busca.classList.toggle('hide-container')
 	registro_meses = JSON.parse(localStorage.getItem("registro_meses")) || []
 	temporario = JSON.parse(localStorage.getItem("registro_meses")) || []
 	atualizar()
