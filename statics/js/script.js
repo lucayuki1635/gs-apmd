@@ -43,7 +43,7 @@ function avancarAno(){
 
 function voltarAno(){
     anoSelecionado--
-	if (anoSelecionado == 2000){
+	if (anoSelecionado == 1){
 		document.getElementById('ano-anterior-btn').disabled = true
 	}
     limparSelecaoMes()
@@ -234,6 +234,9 @@ function mediaMaiorMenor(media_a, informacoes_mes){
 
 //Verificadores
 function verificarFloatPositivo(valor){
+	if(valor.includes(",")){
+		return false
+	}
 	let converter_float = parseFloat(valor)
 	if(isNaN(converter_float)){
 	  return false
