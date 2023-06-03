@@ -105,3 +105,18 @@ align-self: center;
   font-size: 0.9rem;
   text-align: center;
 }
+
+.centralizar-card{
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.tamanho-input{
+  width: 90%;
+}
+
+.centralizar-input-select-div{
+  display: flex;
+  justify-content: center;
+}

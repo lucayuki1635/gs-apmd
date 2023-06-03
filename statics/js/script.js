@@ -23,6 +23,11 @@ document.querySelector("#salvar").addEventListener("click", cadastrar)
 document.getElementById("flexRadioDefault2").addEventListener("change",carregarModal)
 document.getElementById("flexRadioDefault1").addEventListener("change",carregarModal)
 document.querySelector("#consumo").addEventListener("keyup", atualizarModal)
+document.getElementById("rangeMetros").addEventListener("change", gerarArrayConsumo)
+document.getElementById("rangeReais").addEventListener("change", gerarArrayGasto)
+document.querySelector('#busca').addEventListener("keyup",filtroBusca)
+document.getElementById("maior-menor-reais").addEventListener("change", filtroBusca)
+document.getElementById("maior-menor-metros").addEventListener("change", filtroBusca)
 
 //TROCA DE ANO
 function avancarAno(){
@@ -55,7 +60,7 @@ function cadastrar(){
 	let qtd_faixas = 4
 
 	faixas_obrigatorias.forEach(function(valor){
-		if(verificarFloat(valor.value)==false){
+		if(verificarFloatPositivo(valor.value)==false){
 			todas_true = false
 			valor.classList.add("is-invalid")
 		}else{
@@ -64,7 +69,7 @@ function cadastrar(){
 		}
 	})
 
-	consumo = verificarFloat(consumo)
+	consumo = verificarFloatPositivo(consumo)
 
 
 	if (consumo==false){
@@ -111,6 +116,9 @@ function cadastrar(){
 
 function salvar(){
   	localStorage.setItem("registro_meses", JSON.stringify(registro_meses))
+	gerarArrayConsumo()
+	gerarArrayGasto()
+	setMaxInput()
 }
 
 function apagar(id){
@@ -219,15 +227,19 @@ function mediaMaiorMenor(media_a, informacoes_mes){
 }
 
 //Verificadores
-function verificarFloat(valor){
+function verificarFloatPositivo(valor){
 	let converter_float = parseFloat(valor)
 	if(isNaN(converter_float)){
 	  return false
 	}else{
-	  return converter_float
+		if (converter_float > 0){
+			return converter_float
+		}
+		return false
 	}
   }
   
+
 
 //manipulação botão meses
 meses.forEach(function(mes) {
@@ -291,12 +303,7 @@ function atualizar(){
     })    
 }
 
-document.querySelector('#busca').addEventListener("keyup", ()=>{
-    temporario = JSON.parse(localStorage.getItem("registro_meses")) || []
-    const filtro = document.querySelector("#busca").value.toLowerCase()
-    temporario = temporario.filter(mes => mes.mes_nome.toLowerCase().includes(filtro) || mes.ano.toString().includes(filtro) || mes.ano_mes.toLowerCase().includes(filtro))
-    atualizar()
-})
+
 
 function gerarCard(informacoes, ano_anterior){
 	let media_anual =  mediaAnual(informacoes.ano)
@@ -351,8 +358,6 @@ function fecharDropdown(){
 	document.getElementById("navbarSupportedContent").classList.remove("show")
 }
 
-verificarMesesFuturos(anoSelecionado)
-
 function carregarModal() { 
 	let modal_faixas = document.getElementById("input-faixas")
 	let opcao1 = document.getElementById("flexRadioDefault1")
@@ -389,10 +394,8 @@ function carregarModal() {
 
 function atualizarModal(){
 	let consumo = document.querySelector("#consumo").value
-	let consumo_float = verificarFloat(consumo)
+	let consumo_float = verificarFloatPositivo(consumo)
 	let faixas = []
-
-	
 
 	if (document.getElementById("flexRadioDefault1").checked){
 		faixas = ["0 a 10", "11 a 20", "21 a 50", "50 ou mais "]
@@ -407,7 +410,6 @@ function atualizarModal(){
 		document.getElementById(`valor${i}`).classList.remove("obrigatorio")
 	}
 
-
 	if(consumo_float != false) {
 		consumo = parseFloat(consumo)
 		let indexs = valoresRequeridos(consumo)
@@ -419,12 +421,10 @@ function atualizarModal(){
 		}
 		
 	}
-
 	document.querySelectorAll(".opcional").forEach(function(inp){
 		inp.classList.remove("is-invalid")
 	})
 }
-
 
 function valoresRequeridos(consumo) {
 	let valores = null
@@ -451,7 +451,6 @@ function valoresRequeridos(consumo) {
 		}
 	}
 	return valores
-
 }
 
 function valorTotal(valores, consumo){
@@ -498,3 +497,93 @@ function valorDeFaixa(informacoes){
 	}
 	return tabela_faixas
 }
+
+
+function valorOutput(objeto){
+	document.querySelector(`label[for=${objeto.id}]`).querySelector('output').value = parseFloat(objeto.value).toFixed(2)
+	filtroBusca()
+	
+	
+}
+
+function gerarArrayConsumo(){
+	let inpt = document.getElementById("rangeMetros")
+	let consu = registro_meses.map(function(objeto){
+		return objeto.consumo
+	})
+
+	if(consu.length == 0){
+		inpt.max = "0"
+		inpt.disabled = true
+	}else if (consu.length == 1){
+		inpt.max = Math.max(...consu)
+		inpt.disabled = true
+	}else{
+		inpt.disabled = false
+		inpt.max = Math.max(...consu)
+	}
+
+	valorOutput(inpt)
+	
+
+}
+
+
+
+function gerarArrayGasto(){
+	let inpt = document.getElementById("rangeReais")
+	let valores = registro_meses.map(function(objeto){
+		return objeto.valor
+
+	})
+	if(valores.length == 0){
+		inpt.max = "0"
+		inpt.disabled = true
+	}else if (valores.length == 1){
+		inpt.max = Math.max(...valores)
+		inpt.disabled = true
+	}else{
+		inpt.disabled = false
+		inpt.max = Math.max(...valores)
+	}
+	valorOutput(inpt)
+	
+}
+
+function filtroBusca(){
+	const filtro = document.querySelector("#busca").value.toLowerCase()
+	let consumo_inpt = document.querySelector(`label[for=rangeMetros]`).querySelector('output')
+	let gastos_inpt = document.querySelector(`label[for=rangeReais`).querySelector('output')
+	let maior_menor_reais = document.getElementById("maior-menor-reais").value
+	let maior_menor_metros = document.getElementById("maior-menor-metros").value
+	temporario = JSON.parse(localStorage.getItem("registro_meses")) || []
+
+	if(maior_menor_metros == "1"){
+		temporario = temporario.filter(mes => mes.consumo <= parseFloat(consumo_inpt.value).toFixed(2))
+	}else{
+		temporario = temporario.filter(mes => mes.consumo >= parseFloat(consumo_inpt.value).toFixed(2))
+	}
+
+	if(maior_menor_reais == "1"){
+		temporario = temporario.filter(mes => mes.valor <= parseFloat(gastos_inpt.value).toFixed(2))
+	}else{
+		temporario = temporario.filter(mes => mes.valor >= parseFloat(gastos_inpt.value).toFixed(2))
+	}
+	
+	temporario = temporario.filter(mes => mes.mes_nome.toLowerCase().includes(filtro) || mes.ano.toString().includes(filtro) || mes.ano_mes.toLowerCase().includes(filtro))
+
+	atualizar()
+
+}
+
+function setMaxInput(){
+	let inpt = document.getElementById("rangeMetros")
+	inpt.value = inpt.max
+	valorOutput(inpt)
+
+	let inpt1 = document.getElementById("rangeReais")
+	inpt1.value = inpt1.max
+	valorOutput(inpt1)
+}
+
+verificarMesesFuturos(anoSelecionado)

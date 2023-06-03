@@ -28,7 +28,7 @@
                         Registro Meses 
                     </a>
                     <ul class="dropdown-menu">
-                       <li><a class="dropdown-item" onclick="buscarCalendario(); fecharDropdown()" id="concluidas" href="#">Mostrar meses cadastrados</a></li>
+                       <li><a class="dropdown-item" onclick="buscarCalendario(); fecharDropdown(); gerarArrayConsumo(); gerarArrayGasto(); setMaxInput()" id="concluidas" href="#">Mostrar meses cadastrados</a></li>
                     </ul>
                  </li>
               </ul>
@@ -136,9 +136,42 @@
 
   <div class="container hide-container" id="tela-busca">
     <form class="d-flex" role="search">
-      <input id="busca" class="form-control me-2" type="search" placeholder="Buscar mês, ano ou mês/ano" aria-label="Search">
-      <button type="button" class="btn btn-outline-primary" onclick="buscarCalendario()" ><i class="bi bi-calendar2-week"></i></button>
-   </form>
+        <input id="busca" class="form-control me-2" type="search" placeholder="Buscar mês, ano ou mês/ano" aria-label="Search">
+        <button type="button" class="btn btn-outline-primary" onclick="buscarCalendario()" ><i class="bi bi-calendar2-week"></i></button>
+    </form>
+    <br>
+    <div class="card centralizar-card">
+      <form>
+        <div class="row">
+          <div class="form-group row">
+            <label for="rangeReais" class="col-12 form-label">Gasto R$: <output>0</output></label>
+            <div class="col-3 centralizar-input-select-div">
+              <select class="form-select w-75" id="maior-menor-reais" aria-label="Default select example">
+                <option value="1" selected>Menor ou igual</option>
+                <option value="2">Maior ou igual</option>
+              </select>
+            </div>
+            <div class="col-9 centralizar-input-select-div">
+              <input class="tamanho-input" type="range" min="0" max="5" step="any" id="rangeReais" id="gastoLabel" oninput="valorOutput(this)">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="rangeMetros" class="col-12 form-label" id="consumoLabel">Consumo em m³: <output>0</output>m³</label>
+            <div class="col-3 centralizar-input-select-div">
+              <select class="form-select w-75" id="maior-menor-metros" aria-label="Default select example">
+                <option value="1" selected>Menor ou igual</option>
+                <option value="2">Maior ou igual</option>
+              </select>
+            </div>
+            <div class="col-9 centralizar-input-select-div">
+              <input class="tamanho-input" type="range" min="0" max="1" step="any" id="rangeMetros" oninput="valorOutput(this)">
+            </div>
+          </div>
+          <div class="container mt-2 mb-2">
+          </div>
+        </div>
+      </form>
+    </div>
     <br>
     <div class="centralizar-botao">
 
