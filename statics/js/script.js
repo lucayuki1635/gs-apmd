@@ -278,6 +278,8 @@ meses.forEach(function(mes) {
 function buscarCalendario(){
 	let div_calendario = document.getElementById('calendario')
 	let div_busca = document.getElementById('tela-busca')
+	document.getElementById("maior-menor-reais").value = "1"
+	document.getElementById("maior-menor-metros").value = "1"
 	div_calendario.classList.toggle('hide-container')
 	div_busca.classList.toggle('hide-container')
 	registro_meses = JSON.parse(localStorage.getItem("registro_meses")) || []
