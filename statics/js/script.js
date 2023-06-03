@@ -289,6 +289,12 @@ function atualizar(){
 	let temp = document.querySelector('.meses-card')
 	let ano_anterior =''
     temp.innerHTML = ""
+	if (registro_meses.length == 0) {
+		temp.innerHTML = '<h1 class="nao-registrado-encontrado">Não há mês registrado</h1>'	
+	}else if (registro_meses.length != 0 && temporario.length == 0) {
+		temp.innerHTML = '<h1 class="nao-registrado-encontrado">Nenhum mês encontrado</h1>'
+	}
+
 	temporario.sort(function(a, b) {
 		if (b.ano !== a.ano) {
 		  return b.ano - a.ano
