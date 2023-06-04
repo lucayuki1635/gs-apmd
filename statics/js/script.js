@@ -182,10 +182,11 @@ function updateDropdownMes(informacoes){
 	dadosMes.innerHTML =`
 	<div class="card w-100">
 		<div class="card-body">
-		<h5 class="card-title">${informacoes.mes_nome}/${anoSelecionado}</h5>
+		<h3 class="card-title centralizar-titulos-card-botao">${informacoes.mes_nome}/${anoSelecionado}</h3>
+		<hr class="hr" />
 		<p class="card-text">
 			<h6 class="card-title">Informações mensais:</h6>
-			<span>Consumo em litros: ${(informacoes.consumo*1000).toFixed(2)}L</span>
+			<span>Consumo em litros: ${(informacoes.consumo*1000).toFixed(0)}L</span>
 			<br>
 			<span>Consumo em m³: ${informacoes.consumo.toFixed(2)}m³</span>
 			<br>
@@ -193,18 +194,18 @@ function updateDropdownMes(informacoes){
 		</p>
 		<hr class="hr" />
 		<p class="card-text">
-			<h6 class="card-title centralizar-titulos">Comparação Mês x Ano:</h6>
+			<h6 class="centralizar-titulos-card-botao">Comparação Mês x Ano:</h6>
 			<div class="row">
           		<div class="form-group row">
 				  <div class="col-5">
 				  	<h6>Consumo água</h6>
-					<span>Média anual de consumo em L: ${(media_anual_c*1000).toFixed(2)}L</span>
+					<span>Média anual de consumo em L: ${(media_anual_c*1000).toFixed(0)}L</span>
 					<br>
 					<span>Média anual de consumo em m³: ${(media_anual_c).toFixed(2)}m³</span>
 					<br>
 					<span>Consumo de água mês x ano: ${mediaMaiorMenor(media_anual_c, informacoes.consumo)}</span>
 				  </div>
-				  <div class="col-2 mb-1 centralizar-botao">
+				  <div class="col-2 mb-1 centralizar-titulos-card-botao">
 					<div class="d-flex" style="height: 5rem;">
 						<div class="vr"></div>
 					</div>
@@ -245,6 +246,7 @@ function mediaAnualValor(ano){
 	let media = soma/mes_cadastrados.length
 	return media
 }
+
 
 function mediaMaiorMenor(media_a, consumo_ou_valor){
 	if (media_a > consumo_ou_valor){
@@ -318,12 +320,14 @@ function buscarCalendario(){
 	document.getElementById('tela-busca').classList.toggle('hide-container')
 	document.getElementById("maior-menor-reais").value = "1"
 	document.getElementById("maior-menor-metros").value = "1"
+	document.getElementById("busca").value = ""
 	registro_meses = JSON.parse(localStorage.getItem("registro_meses")) || []
 	temporario = JSON.parse(localStorage.getItem("registro_meses")) || []
 	atualizar()
 }
 
 function atualizar(){
+	totalizarValores()
 	let temp = document.querySelector('.meses-card')
 	let ano_anterior =''
     temp.innerHTML = ""
@@ -340,6 +344,7 @@ function atualizar(){
 		  return a.mes_id - b.mes_id
 		}
 	  })
+	
 	temporario.forEach((mes) => {
         document.querySelector(".meses-card").innerHTML += gerarCard(mes, ano_anterior)
 		ano_anterior = mes.ano
@@ -357,10 +362,10 @@ function gerarCard(informacoes, ano_anterior){
 	if(ano_anterior != informacoes.ano) {
 		base_hmtl += `
 		<br>
-		<h3 class="centralizar-botao">${informacoes.ano}</h3>
-		<div class="centralizar-botao">
+		<h3 class="centralizar-titulos-card-botao">${informacoes.ano}</h3>
+		<div class="centralizar-titulos-card-botao">
 			
-			<div class="alert alert alert-primary tamanho-alerta" role="alert">
+			<div class="alert alert-primary" role="alert">
 				<span>Média anual de consumo água: ${(media_anual_c).toFixed(2)}m³</span>
 				<br>
 				<span>Média anual de valor da conta: R$${(media_anual_v).toFixed(2)}</span>
@@ -374,10 +379,11 @@ function gerarCard(informacoes, ano_anterior){
 	<br>
 	<div class="card w-100">
 		<div class="card-body">
-		<h5 class="card-title">${informacoes.mes_nome}/${anoSelecionado}</h5>
+		<h3 class="card-title centralizar-titulos-card-botao">${informacoes.mes_nome}/${anoSelecionado}</h3>
+		<hr class="hr" />
 		<p class="card-text">
 			<h6 class="card-title">Informações mensais:</h6>
-			<span>Consumo em litros: ${(informacoes.consumo*1000).toFixed(2)}L</span>
+			<span>Consumo em litros: ${(informacoes.consumo*1000).toFixed(0)}L</span>
 			<br>
 			<span>Consumo em m³: ${informacoes.consumo.toFixed(2)}m³</span>
 			<br>
@@ -385,14 +391,14 @@ function gerarCard(informacoes, ano_anterior){
 		</p>
 		<hr class="hr" />
 		<p class="card-text">
-			<h6 class="card-title centralizar-titulos">Comparação Mês x Ano:</h6>
+			<h6 class="centralizar-titulos-card-botao">Comparação Mês x Ano:</h6>
 			<div class="row">
           		<div class="form-group row">
 				  <div class="col-5">
 				  	<h6>Consumo água</h6>
 					<span>Consumo de água mês x ano: ${mediaMaiorMenor(media_anual_c, informacoes.consumo)}</span>
 				  </div>
-				  <div class="col-2 mb-1 centralizar-botao">
+				  <div class="col-2 mb-1 centralizar-titulos-card-botao">
 					<div class="d-flex" style="height: 4rem;">
 						<div class="vr"></div>
 					</div>
@@ -409,13 +415,79 @@ function gerarCard(informacoes, ano_anterior){
 			<h6 class="card-title">Valor pago por faixa:</h6>
 			${valorDeFaixa(informacoes)}
 		</p>
-		<a href="#" class="btn btn-primary" onClick='desativarDropdownMes(); limparSelecaoMes()'>Fechar</a>
 		<a href="#" class="btn btn-danger" onClick='apagar("${informacoes.id}")'><i class="bi bi-trash3-fill"></i></i></a>
 		</div>
 	</div>
 	`
 
 	return base_hmtl
+}
+
+function totalizarValores(){
+	let card = document.getElementById("card-total")
+	let total_consumo = registro_meses.map(function(objeto){
+		return objeto.consumo
+	})
+
+	let total_gasto = registro_meses.map(function(objeto){
+		return objeto.valor
+	})
+
+	if(registro_meses.length > 0){
+		total_consumo = total_consumo.reduce((a, b) => a + b).toFixed(2)
+		total_gasto = total_gasto.reduce((a, b) => a + b).toFixed(2)
+	}else{
+		total_consumo = 0
+		total_gasto = 0
+	}
+
+	let media_total_consumo = registro_meses.reduce((total, valor_soma) => total + valor_soma.consumo, 0)
+	media_total_consumo = media_total_consumo/registro_meses.length
+
+	let media_total_valor = registro_meses.reduce((total, valor_soma) => total + valor_soma.valor, 0)
+	media_total_valor = media_total_valor/registro_meses.length
+
+	if(registro_meses.length==0){
+		media_total_consumo = 0
+		media_total_valor = 0
+	}
+
+	card.innerHTML = `
+	<p class="card-text">
+		<div class="row">
+			<div class="form-group row">
+				<div class="col-5 centralizar-titulos-card-botao">
+					<p>
+						<span class="informacoes-negrito">Consumo total:</span> <span>${total_consumo}m³</span>
+						<br>
+						<span class="informacoes-negrito">Valores pagos:</span> <span>R$${total_gasto}</span>
+						<br>
+						<span class="informacoes-negrito">Número de meses registrados:</span> <span>${registro_meses.length}</span>
+					</p>
+				</div>
+				<div class="col-2 mb-1 centralizar-titulos-card-botao">
+				<div class="d-flex" style="height: 5rem;">
+					<div class="vr"></div>
+				</div>
+				</div>
+				<div class="col-5 centralizar-titulos-card-botao">
+					<p>
+						<span class="informacoes-negrito">Média consumo total:</span> <span>${media_total_consumo.toFixed(2)}m³</span>
+						<br>
+						<span class="informacoes-negrito">Média valores pagos:</span> <span>R$${media_total_valor.toFixed(2)}</span>
+						<br>
+						<span class="informacoes-negrito">Visualizar meses registrados:</span> <span><a class="mostrar-mais" onclick="buscarCalendario(); fecharDropdown(); gerarArrayConsumo(); gerarArrayGasto(); setMaxInput();" id="concluidas" href="#">Clique aqui</a></span>
+					</p>
+				</div>
+			</div>
+		</div>
+		
+
+  	</p>
+  `
+
+
+	
 }
 
 function fecharDropdown(){
@@ -619,15 +691,15 @@ function filtroBusca(){
 	temporario = JSON.parse(localStorage.getItem("registro_meses")) || []
 
 	if(maior_menor_metros == "1"){
-		temporario = temporario.filter(mes => mes.consumo <= parseFloat(consumo_inpt.value).toFixed(2))
+		temporario = temporario.filter(mes => mes.consumo <= parseFloat(consumo_inpt.value))
 	}else{
-		temporario = temporario.filter(mes => mes.consumo >= parseFloat(consumo_inpt.value).toFixed(2))
+		temporario = temporario.filter(mes => mes.consumo >= parseFloat(consumo_inpt.value))
 	}
 
 	if(maior_menor_reais == "1"){
-		temporario = temporario.filter(mes => mes.valor <= parseFloat(gastos_inpt.value).toFixed(2))
+		temporario = temporario.filter(mes => mes.valor.toFixed(2) <= parseFloat(gastos_inpt.value))
 	}else{
-		temporario = temporario.filter(mes => mes.valor >= parseFloat(gastos_inpt.value).toFixed(2))
+		temporario = temporario.filter(mes => mes.valor.toFixed(2) >= parseFloat(gastos_inpt.value))
 	}
 	
 	temporario = temporario.filter(mes => mes.mes_nome.toLowerCase().includes(filtro) || mes.ano.toString().includes(filtro) || mes.ano_mes.toLowerCase().includes(filtro))
@@ -647,3 +719,4 @@ function setMaxInput(){
 }
 
 verificarMesesFuturos(anoSelecionado)
+totalizarValores()

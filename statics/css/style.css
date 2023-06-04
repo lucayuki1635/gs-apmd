@@ -38,7 +38,7 @@ cursor: not-allowed;
 }
 
 .mes.selecionado {
-background-color: #0000FF;
+background-color: #0c5ef5;
 color: #fff;
 }
 
@@ -65,11 +65,6 @@ color: #fff;
   color:#525050;
 }
 
-.centralizar-botao{
-  display: flex;
-  justify-content: center;
-  text-align: center;
-}
 
 .centralizar-texto{
   color: #525050;
@@ -79,17 +74,12 @@ color: #fff;
   text-align: center;
 }
 
-.centralizar-titulos{
+.centralizar-titulos-card-botao{
   display: flex;
   justify-content: center;
   text-align: center;
 }
 
-.centralizar-card{
-  display: flex;
-  justify-content: center;
-  text-align: center;
-}
 
 .tamanho-input{
   width: 90%;
@@ -107,3 +97,15 @@ color: #fff;
   text-align: center;
 }
 
+.informacoes-negrito{
+  font-weight: 700;
+}
+
+.margem-card{
+  margin-bottom: 0.3rem;
+}
+
+.mostrar-mais{
+  text-decoration: none;
+  color: #000;
+}
