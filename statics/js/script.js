@@ -176,9 +176,9 @@ function desativarDropdownMes(){
 }
 
 function updateDropdownMes(informacoes){
-	let dadosMes = document.getElementById('dadosMes');
-	let media_anual =  mediaAnual(anoSelecionado)
-
+	let dadosMes = document.getElementById('dadosMes')
+	let media_anual_c =  mediaAnualConsumo(anoSelecionado)
+	let media_anual_v = mediaAnualValor(anoSelecionado)
 	dadosMes.innerHTML =`
 	<div class="card w-100">
 		<div class="card-body">
@@ -191,14 +191,34 @@ function updateDropdownMes(informacoes){
 			<br>
 			<span>Total pago: R$${informacoes.valor.toFixed(2)}</span>
 		</p>
+		<hr class="hr" />
 		<p class="card-text">
-			<h6 class="card-title">Comparação Mês x Ano:</h6>
-			<span>Média anual de consumo em L: ${(media_anual*1000).toFixed(2)}L</span>
-			<br>
-			<span>Média anual de consumo em m³: ${(media_anual).toFixed(2)}m³</span>
-			<br>
-			<span>Consumo mensal em relação ao consumo anual: ${mediaMaiorMenor(media_anual, informacoes)}</span>
+			<h6 class="card-title centralizar-titulos">Comparação Mês x Ano:</h6>
+			<div class="row">
+          		<div class="form-group row">
+				  <div class="col-5">
+				  	<h6>Consumo água</h6>
+					<span>Média anual de consumo em L: ${(media_anual_c*1000).toFixed(2)}L</span>
+					<br>
+					<span>Média anual de consumo em m³: ${(media_anual_c).toFixed(2)}m³</span>
+					<br>
+					<span>Consumo de água mês x ano: ${mediaMaiorMenor(media_anual_c, informacoes.consumo)}</span>
+				  </div>
+				  <div class="col-2 mb-1 centralizar-botao">
+					<div class="d-flex" style="height: 5rem;">
+						<div class="vr"></div>
+					</div>
+				  </div>
+				  <div class="col-5">
+				  	<h6>Gasto em reais</h6>
+					<span>Média anual de valor pago: R$${(media_anual_v).toFixed(2)}</span>
+					<br>
+					<span>Valor da conta mês x ano: ${mediaMaiorMenor(media_anual_v, informacoes.valor)}</span>
+				  </div>
+				</div>
+			</div>
 		</p>
+		<hr class="hr" />
 		<p class="card-text tabela-faixa">
 			<h6 class="card-title">Valor pago por faixa:</h6>
 			${valorDeFaixa(informacoes)}
@@ -212,22 +232,29 @@ function updateDropdownMes(informacoes){
 }
 
 //Calculo médias
-function mediaAnual(ano){
+function mediaAnualConsumo(ano){
 	let mes_cadastrados = registro_meses.filter(mes => mes.id.includes(ano))
 	let soma = mes_cadastrados.reduce((total, valor_soma) => total + valor_soma.consumo, 0)
 	let media = soma/mes_cadastrados.length
 	return media
 }
 
-function mediaMaiorMenor(media_a, informacoes_mes){
-	if (media_a > informacoes_mes.consumo){
-		let m = (((media_a/informacoes_mes.consumo)-1)*100).toFixed(2)
-		return `<span class="baixo-consumo">Abaixo da média em ${m}%</span>`
-	}else if (media_a < informacoes_mes.consumo){
-		let m = (((informacoes_mes.consumo/media_a)-1)*100).toFixed(2)
-		return `<span class="alto-consumo">Acima da média em ${m}% </span>`
+function mediaAnualValor(ano){
+	let mes_cadastrados = registro_meses.filter(mes => mes.id.includes(ano))
+	let soma = mes_cadastrados.reduce((total, valor_soma) => total + valor_soma.valor, 0)
+	let media = soma/mes_cadastrados.length
+	return media
+}
+
+function mediaMaiorMenor(media_a, consumo_ou_valor){
+	if (media_a > consumo_ou_valor){
+		let m = (((media_a/consumo_ou_valor)-1)*100).toFixed(2)
+		return `<span class="baixo-consumo">Está abaixo da média em ${m}%</span>`
+	}else if (media_a < consumo_ou_valor){
+		let m = (((consumo_ou_valor/media_a)-1)*100).toFixed(2)
+		return `<span class="alto-consumo">Está acima da média em ${m}% </span>`
 	}else{
-		return `<span class="consumo-na-media">O mês está na média anual</span>`
+		return `<span class="consumo-na-media">Está na média anual</span>`
 	}
 
 }
@@ -323,7 +350,8 @@ function atualizar(){
 
 
 function gerarCard(informacoes, ano_anterior){
-	let media_anual =  mediaAnual(informacoes.ano)
+	let media_anual_c =  mediaAnualConsumo(anoSelecionado)
+	let media_anual_v = mediaAnualValor(anoSelecionado)
 	let base_hmtl = ``
 	
 	if(ano_anterior != informacoes.ano) {
@@ -333,7 +361,9 @@ function gerarCard(informacoes, ano_anterior){
 		<div class="centralizar-botao">
 			
 			<div class="alert alert alert-primary tamanho-alerta" role="alert">
-				<span>Média anual de consumo: ${(media_anual).toFixed(2)}m³</span>
+				<span>Média anual de consumo água: ${(media_anual_c).toFixed(2)}m³</span>
+				<br>
+				<span>Média anual de valor da conta: R$${(media_anual_v).toFixed(2)}</span>
 			</div>
 		</div>
 		`
@@ -344,26 +374,43 @@ function gerarCard(informacoes, ano_anterior){
 	<br>
 	<div class="card w-100">
 		<div class="card-body">
-			<div class="centralizar-texto">
-				<h5 class="card-title">${informacoes.mes_nome}/${informacoes.ano}</h5>
+		<h5 class="card-title">${informacoes.mes_nome}/${anoSelecionado}</h5>
+		<p class="card-text">
+			<h6 class="card-title">Informações mensais:</h6>
+			<span>Consumo em litros: ${(informacoes.consumo*1000).toFixed(2)}L</span>
+			<br>
+			<span>Consumo em m³: ${informacoes.consumo.toFixed(2)}m³</span>
+			<br>
+			<span>Total pago: R$${informacoes.valor.toFixed(2)}</span>
+		</p>
+		<hr class="hr" />
+		<p class="card-text">
+			<h6 class="card-title centralizar-titulos">Comparação Mês x Ano:</h6>
+			<div class="row">
+          		<div class="form-group row">
+				  <div class="col-5">
+				  	<h6>Consumo água</h6>
+					<span>Consumo de água mês x ano: ${mediaMaiorMenor(media_anual_c, informacoes.consumo)}</span>
+				  </div>
+				  <div class="col-2 mb-1 centralizar-botao">
+					<div class="d-flex" style="height: 4rem;">
+						<div class="vr"></div>
+					</div>
+				  </div>
+				  <div class="col-5">
+				  	<h6>Gasto em reais</h6>
+					<span>Valor da conta mês x ano: ${mediaMaiorMenor(media_anual_v, informacoes.valor)}</span>
+				  </div>
+				</div>
 			</div>
-			<p class="card-text">
-				<h6 class="card-title">Informações mensais:</h6>
-				<span>Consumo em litros: ${(informacoes.consumo*1000).toFixed(2)}L</span>
-				<br>
-				<span>Consumo em m³: ${(informacoes.consumo).toFixed(2)}m³</span>
-				<br>
-				<span>Total pago: R$${informacoes.valor.toFixed(2)}</span>
-			</p>
-			<p class="card-text">
-				<h6 class="card-title">Comparação Mês x Ano:</h6>
-				<span>Consumo de água mensal em relação ao consumo anual: ${mediaMaiorMenor(media_anual, informacoes)}</span>
-			</p>
-			<p class="card-text tabela-faixa">
-				<h6 class="card-title">Valor pago por faixa:</h6>
-				${valorDeFaixa(informacoes)}
-			</p>
-			<a href="#" class="btn btn-danger" onClick='apagar("${informacoes.id}")'><i class="bi bi-trash3-fill"></i></i></a>
+		</p>
+		<hr class="hr" />
+		<p class="card-text tabela-faixa">
+			<h6 class="card-title">Valor pago por faixa:</h6>
+			${valorDeFaixa(informacoes)}
+		</p>
+		<a href="#" class="btn btn-primary" onClick='desativarDropdownMes(); limparSelecaoMes()'>Fechar</a>
+		<a href="#" class="btn btn-danger" onClick='apagar("${informacoes.id}")'><i class="bi bi-trash3-fill"></i></i></a>
 		</div>
 	</div>
 	`
@@ -539,10 +586,8 @@ function gerarArrayConsumo(){
 		inpt.disabled = false
 		inpt.max = Math.max(...consu)
 	}
-
 	valorOutput(inpt)
 	
-
 }
 
 
@@ -551,7 +596,6 @@ function gerarArrayGasto(){
 	let inpt = document.getElementById("rangeReais")
 	let valores = registro_meses.map(function(objeto){
 		return objeto.valor
-
 	})
 	if(valores.length == 0){
 		inpt.max = "0"
@@ -564,7 +608,6 @@ function gerarArrayGasto(){
 		inpt.max = Math.max(...valores)
 	}
 	valorOutput(inpt)
-	
 }
 
 function filtroBusca(){

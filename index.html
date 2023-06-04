@@ -53,22 +53,22 @@
           </thead>
           <tbody>
             <tr>
-              <td id="1" class="mes" onclick="ativarDropdownMes(this.id)">Janeiro</td>
-              <td id="2" class="mes" onclick="ativarDropdownMes(this.id)">Fevereiro</td>
-              <td id="3" class="mes" onclick="ativarDropdownMes(this.id)">Março</td>
-              <td id="4" class="mes" onclick="ativarDropdownMes(this.id)">Abril</td>
+              <td id="1" class="mes" onclick="ativarDropdownMes(this.id)">Jan.</td>
+              <td id="2" class="mes" onclick="ativarDropdownMes(this.id)">Fev.</td>
+              <td id="3" class="mes" onclick="ativarDropdownMes(this.id)">Mar.</td>
+              <td id="4" class="mes" onclick="ativarDropdownMes(this.id)">Abr.</td>
             </tr>
             <tr>
-              <td id="5" class="mes" onclick="ativarDropdownMes(this.id)">Maio</td>
-              <td id="6" class="mes" onclick="ativarDropdownMes(this.id)">Junho</td>
-              <td id="7" class="mes" onclick="ativarDropdownMes(this.id)">Julho</td>
-              <td id="8" class="mes" onclick="ativarDropdownMes(this.id)">Agosto</td>
+              <td id="5" class="mes" onclick="ativarDropdownMes(this.id)">Mai.</td>
+              <td id="6" class="mes" onclick="ativarDropdownMes(this.id)">Jun.</td>
+              <td id="7" class="mes" onclick="ativarDropdownMes(this.id)">Jul.</td>
+              <td id="8" class="mes" onclick="ativarDropdownMes(this.id)">Ago.</td>
             </tr>
             <tr>
-              <td id="9" class="mes" onclick="ativarDropdownMes(this.id)">Setembro</td>
-              <td id="10" class="mes" onclick="ativarDropdownMes(this.id)">Novembro</td>
-              <td id="11" class="mes" onclick="ativarDropdownMes(this.id)">Outubro</td>
-              <td id="12" class="mes" onclick="ativarDropdownMes(this.id)">Dezembro</td>
+              <td id="9" class="mes" onclick="ativarDropdownMes(this.id)">Set.</td>
+              <td id="10" class="mes" onclick="ativarDropdownMes(this.id)">Nov.</td>
+              <td id="11" class="mes" onclick="ativarDropdownMes(this.id)">Out.</td>
+              <td id="12" class="mes" onclick="ativarDropdownMes(this.id)">Dez.</td>
             </tr>
           </tbody>
         </table>
@@ -123,8 +123,10 @@
           
 				</div>
 				</div>
-        <p class="centralizar-texto">*Valor fixo = valor mínimo a ser pago, independentemente do consumo</p>
-        <p class="centralizar-texto">*Utilize ponto (.) para valores decimais</p>
+      
+        <span class="centralizar-texto">*Valor fixo = valor mínimo a ser pago, independentemente do consumo</span>
+        <span class="centralizar-texto">*Utilize ponto (.) para valores decimais</span>
+        <br>
 				<div class="modal-footer">
           
 				   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -145,6 +147,7 @@
       <form>
         <div class="row">
           <div class="form-group row">
+            <h4 class="centralizar-titulos">Filtros avançados</h4>
             <label for="rangeReais" class="col-12 form-label">Gasto R$: <output>0</output></label>
             <div class="col-3 centralizar-input-select-div">
               <select class="form-select w-75" id="maior-menor-reais" aria-label="Default select example">

@@ -53,10 +53,6 @@ color: #fff;
   display: none;
 }
 
-.centralizar-texto{
-  text-align: center;
-}
-
 .alto-consumo{
   color: #ff0000;
 }
@@ -80,6 +76,12 @@ color: #fff;
   display: flex;
   justify-content: center;
   font-size: 0.9rem;
+  text-align: center;
+}
+
+.centralizar-titulos{
+  display: flex;
+  justify-content: center;
   text-align: center;
 }
 
