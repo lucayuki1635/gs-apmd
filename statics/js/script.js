@@ -269,10 +269,12 @@ meses.forEach(function(mes) {
   function verificarMesesFuturos(ano) {
 	  meses.forEach(function(mes) {
 	  if (ano > anoAtual || (ano === anoAtual && mes.id> mesAtual)) {
-		  mes.classList.add('mes-futuro');
+		  mes.classList.add('mes-futuro')
 		  mes.classList.remove('selecionado')
+		  mes.classList.remove('clicavel')
 	  } else {
 		  mes.classList.remove('mes-futuro')
+		  mes.classList.add('clicavel')
 	  }
 	})
   }

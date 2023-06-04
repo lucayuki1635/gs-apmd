@@ -25,6 +25,12 @@ border-radius: 0.5rem;
 cursor: pointer;
 transition: background-color 0.3s ease;
 }
+
+.clicavel:hover{
+  transform: scale(0.93);
+  background-color: #2abbdb;
+}
+
   
 .mes-futuro {
 color: #880d0d;
@@ -34,11 +40,6 @@ cursor: not-allowed;
 .mes.selecionado {
 background-color: #0000FF;
 color: #fff;
-}
-
-#anoCalendario {
-margin-top: 0.5rem;
-align-self: center;
 }
 
 .mes-container {
@@ -54,11 +55,6 @@ align-self: center;
 
 .centralizar-texto{
   text-align: center;
-}
-
-.tamanho-alerta{
-  margin: auto;
-  max-width: 23rem;
 }
 
 .alto-consumo{
