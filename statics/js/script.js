@@ -32,7 +32,7 @@ document.getElementById("maior-menor-metros").addEventListener("change", filtroB
 //TROCA DE ANO
 function avancarAno(){
     anoSelecionado++
-	if (anoSelecionado > 2000){
+	if (anoSelecionado > 1950){
 		document.getElementById('ano-anterior-btn').disabled = false
 	}
     limparSelecaoMes()
@@ -43,7 +43,7 @@ function avancarAno(){
 
 function voltarAno(){
     anoSelecionado--
-	if (anoSelecionado == 1){
+	if (anoSelecionado == 1950){
 		document.getElementById('ano-anterior-btn').disabled = true
 	}
     limparSelecaoMes()
