@@ -485,9 +485,6 @@ function totalizarValores(){
 
   	</p>
   `
-
-
-	
 }
 
 function fecharDropdown(){
@@ -638,8 +635,6 @@ function valorDeFaixa(informacoes){
 function valorOutput(objeto){
 	document.querySelector(`label[for=${objeto.id}]`).querySelector('output').value = parseFloat(objeto.value).toFixed(2)
 	filtroBusca()
-	
-	
 }
 
 function gerarArrayConsumo(){
@@ -647,7 +642,6 @@ function gerarArrayConsumo(){
 	let consu = registro_meses.map(function(objeto){
 		return objeto.consumo
 	})
-
 	if(consu.length == 0){
 		inpt.max = "0"
 		inpt.disabled = true
@@ -701,9 +695,7 @@ function filtroBusca(){
 	}else{
 		temporario = temporario.filter(mes => mes.valor.toFixed(2) >= parseFloat(gastos_inpt.value))
 	}
-	
 	temporario = temporario.filter(mes => mes.mes_nome.toLowerCase().includes(filtro) || mes.ano.toString().includes(filtro) || mes.ano_mes.toLowerCase().includes(filtro))
-
 	atualizar()
 
 }
@@ -712,7 +704,6 @@ function setMaxInput(){
 	let inpt = document.getElementById("rangeMetros")
 	inpt.value = inpt.max
 	valorOutput(inpt)
-
 	let inpt1 = document.getElementById("rangeReais")
 	inpt1.value = inpt1.max
 	valorOutput(inpt1)
