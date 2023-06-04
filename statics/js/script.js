@@ -193,7 +193,7 @@ function updateDropdownMes(informacoes){
 		</p>
 		<p class="card-text">
 			<h6 class="card-title">Comparação Mês x Ano:</h6>
-			<span>Média anual de consumo: ${(media_anual*1000).toFixed(2)}L</span>
+			<span>Média anual de consumo em L: ${(media_anual*1000).toFixed(2)}L</span>
 			<br>
 			<span>Média anual de consumo em m³: ${(media_anual).toFixed(2)}m³</span>
 			<br>
@@ -357,7 +357,7 @@ function gerarCard(informacoes, ano_anterior){
 			</p>
 			<p class="card-text">
 				<h6 class="card-title">Comparação Mês x Ano:</h6>
-				<span>Consumo mensal em relação ao consumo anual: ${mediaMaiorMenor(media_anual, informacoes)}</span>
+				<span>Consumo de água mensal em relação ao consumo anual: ${mediaMaiorMenor(media_anual, informacoes)}</span>
 			</p>
 			<p class="card-text tabela-faixa">
 				<h6 class="card-title">Valor pago por faixa:</h6>
