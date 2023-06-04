@@ -206,7 +206,7 @@ function updateDropdownMes(informacoes){
 					<span>Consumo de água mês x ano: ${mediaMaiorMenor(media_anual_c, informacoes.consumo)}</span>
 				  </div>
 				  <div class="col-2 mb-1 centralizar-titulos-card-botao">
-					<div class="d-flex" style="max-height: 20rem;">
+					<div class="d-flex" style="max-height: 30rem;">
 						<div class="vr"></div>
 					</div>
 				  </div>
@@ -402,7 +402,7 @@ function gerarCard(informacoes, ano_anterior){
 					<span>Consumo de água mês x ano: ${mediaMaiorMenor(media_anual_c, informacoes.consumo)}</span>
 				  </div>
 				  <div class="col-2 mb-1 centralizar-titulos-card-botao">
-					<div class="d-flex" style="max-height: 20rem;">
+					<div class="d-flex" style="max-height: 30rem;">
 						<div class="vr"></div>
 					</div>
 				  </div>
