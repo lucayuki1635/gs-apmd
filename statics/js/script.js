@@ -206,7 +206,7 @@ function updateDropdownMes(informacoes){
 					<span>Consumo de água mês x ano: ${mediaMaiorMenor(media_anual_c, informacoes.consumo)}</span>
 				  </div>
 				  <div class="col-2 mb-1 centralizar-titulos-card-botao">
-					<div class="d-flex" style="height: 5rem;">
+					<div class="d-flex" style="max-height: 20rem;">
 						<div class="vr"></div>
 					</div>
 				  </div>
@@ -230,6 +230,10 @@ function updateDropdownMes(informacoes){
 	</div>
 	`
 
+}
+
+function fecharDropdown(){
+	document.getElementById("navbarSupportedContent").classList.remove("show")
 }
 
 //Calculo médias
@@ -277,7 +281,6 @@ function verificarFloatPositivo(valor){
 	}
   }
   
-
 
 //manipulação botão meses
 meses.forEach(function(mes) {
@@ -353,7 +356,7 @@ function atualizar(){
 }
 
 
-
+//Cards
 function gerarCard(informacoes, ano_anterior){
 	let media_anual_c =  mediaAnualConsumo(anoSelecionado)
 	let media_anual_v = mediaAnualValor(anoSelecionado)
@@ -399,7 +402,7 @@ function gerarCard(informacoes, ano_anterior){
 					<span>Consumo de água mês x ano: ${mediaMaiorMenor(media_anual_c, informacoes.consumo)}</span>
 				  </div>
 				  <div class="col-2 mb-1 centralizar-titulos-card-botao">
-					<div class="d-flex" style="height: 4rem;">
+					<div class="d-flex" style="max-height: 20rem;">
 						<div class="vr"></div>
 					</div>
 				  </div>
@@ -422,10 +425,71 @@ function gerarCard(informacoes, ano_anterior){
 
 	return base_hmtl
 }
-function fecharDropdown(){
-	document.getElementById("navbarSupportedContent").classList.remove("show")
+
+function totalizarValores(){
+	let card = document.getElementById("card-total")
+	let total_consumo = registro_meses.map(function(objeto){
+		return objeto.consumo
+	})
+
+	let total_gasto = registro_meses.map(function(objeto){
+		return objeto.valor
+	})
+
+	if(registro_meses.length > 0){
+		total_consumo = total_consumo.reduce((a, b) => a + b).toFixed(2)
+		total_gasto = total_gasto.reduce((a, b) => a + b).toFixed(2)
+	}else{
+		total_consumo = 0
+		total_gasto = 0
+	}
+
+	let media_total_consumo = registro_meses.reduce((total, valor_soma) => total + valor_soma.consumo, 0)
+	media_total_consumo = media_total_consumo/registro_meses.length
+
+	let media_total_valor = registro_meses.reduce((total, valor_soma) => total + valor_soma.valor, 0)
+	media_total_valor = media_total_valor/registro_meses.length
+
+	if(registro_meses.length==0){
+		media_total_consumo = 0
+		media_total_valor = 0
+	}
+
+	card.innerHTML = `
+	<p class="card-text">
+		<div class="row">
+			<div class="form-group row">
+				<div class="col-5 centralizar-titulos-card-botao">
+					<p>
+						<span class="informacoes-negrito">Consumo total:</span> <span>${total_consumo}m³</span>
+						<br>
+						<span class="informacoes-negrito">Valores pagos:</span> <span>R$${total_gasto}</span>
+						<br>
+						<span class="informacoes-negrito">Número de meses registrados:</span> <span>${registro_meses.length}</span>
+					</p>
+				</div>
+				<div class="col-2 mb-1 centralizar-titulos-card-botao">
+				<div class="d-flex" style="height: 5rem;">
+					<div class="vr"></div>
+				</div>
+				</div>
+				<div class="col-5 centralizar-titulos-card-botao">
+					<p>
+						<span class="informacoes-negrito">Média consumo total:</span> <span>${media_total_consumo.toFixed(2)}m³</span>
+						<br>
+						<span class="informacoes-negrito">Média valores pagos:</span> <span>R$${media_total_valor.toFixed(2)}</span>
+						<br>
+						<span class="informacoes-negrito">Visualizar meses registrados:</span> <span><a class="mostrar-mais" onclick="buscarCalendario(); fecharDropdown(); gerarArrayConsumo(); gerarArrayGasto(); setMaxInput();" id="concluidas" href="#">Clique aqui</a></span>
+					</p>
+				</div>
+			</div>
+		</div>
+  	</p>
+  `
 }
 
+
+//Modal
 function carregarModal() { 
 	let modal_faixas = document.getElementById("input-faixas")
 	let opcao1 = document.getElementById("flexRadioDefault1")
@@ -572,45 +636,7 @@ function valorOutput(objeto){
 	filtroBusca()
 }
 
-function gerarArrayConsumo(){
-	let inpt = document.getElementById("rangeMetros")
-	let consu = registro_meses.map(function(objeto){
-		return objeto.consumo
-	})
-	if(consu.length == 0){
-		inpt.max = "0"
-		inpt.disabled = true
-	}else if (consu.length == 1){
-		inpt.max = Math.max(...consu)
-		inpt.disabled = true
-	}else{
-		inpt.disabled = false
-		inpt.max = Math.max(...consu)
-	}
-	valorOutput(inpt)
-	
-}
-
-
-
-function gerarArrayGasto(){
-	let inpt = document.getElementById("rangeReais")
-	let valores = registro_meses.map(function(objeto){
-		return objeto.valor
-	})
-	if(valores.length == 0){
-		inpt.max = "0"
-		inpt.disabled = true
-	}else if (valores.length == 1){
-		inpt.max = Math.max(...valores)
-		inpt.disabled = true
-	}else{
-		inpt.disabled = false
-		inpt.max = Math.max(...valores)
-	}
-	valorOutput(inpt)
-}
-
+//Filtros
 function filtroBusca(){
 	const filtro = document.querySelector("#busca").value.toLowerCase()
 	let consumo_inpt = document.querySelector(`label[for=rangeMetros]`).querySelector('output')
@@ -635,6 +661,44 @@ function filtroBusca(){
 
 }
 
+
+function gerarArrayConsumo(){
+	let inpt = document.getElementById("rangeMetros")
+	let consu = registro_meses.map(function(objeto){
+		return objeto.consumo
+	})
+	if(consu.length == 0){
+		inpt.max = "0"
+		inpt.disabled = true
+	}else if (consu.length == 1){
+		inpt.max = Math.max(...consu)
+		inpt.disabled = true
+	}else{
+		inpt.disabled = false
+		inpt.max = Math.max(...consu)
+	}
+	valorOutput(inpt)
+	
+}
+
+function gerarArrayGasto(){
+	let inpt = document.getElementById("rangeReais")
+	let valores = registro_meses.map(function(objeto){
+		return objeto.valor
+	})
+	if(valores.length == 0){
+		inpt.max = "0"
+		inpt.disabled = true
+	}else if (valores.length == 1){
+		inpt.max = Math.max(...valores)
+		inpt.disabled = true
+	}else{
+		inpt.disabled = false
+		inpt.max = Math.max(...valores)
+	}
+	valorOutput(inpt)
+}
+
 function setMaxInput(){
 	let inpt = document.getElementById("rangeMetros")
 	inpt.value = inpt.max
@@ -643,70 +707,6 @@ function setMaxInput(){
 	inpt1.value = inpt1.max
 	valorOutput(inpt1)
 }
-
-function totalizarValores(){
-	let card = document.getElementById("card-total")
-	let total_consumo = registro_meses.map(function(objeto){
-		return objeto.consumo
-	})
-
-	let total_gasto = registro_meses.map(function(objeto){
-		return objeto.valor
-	})
-
-	if(registro_meses.length > 0){
-		total_consumo = total_consumo.reduce((a, b) => a + b).toFixed(2)
-		total_gasto = total_gasto.reduce((a, b) => a + b).toFixed(2)
-	}else{
-		total_consumo = 0
-		total_gasto = 0
-	}
-
-	let media_total_consumo = registro_meses.reduce((total, valor_soma) => total + valor_soma.consumo, 0)
-	media_total_consumo = media_total_consumo/registro_meses.length
-
-	let media_total_valor = registro_meses.reduce((total, valor_soma) => total + valor_soma.valor, 0)
-	media_total_valor = media_total_valor/registro_meses.length
-
-	if(registro_meses.length==0){
-		media_total_consumo = 0
-		media_total_valor = 0
-	}
-
-	card.innerHTML = `
-	<p class="card-text">
-		<div class="row">
-			<div class="form-group row">
-				<div class="col-5 centralizar-titulos-card-botao">
-					<p>
-						<span class="informacoes-negrito">Consumo total:</span> <span>${total_consumo}m³</span>
-						<br>
-						<span class="informacoes-negrito">Valores pagos:</span> <span>R$${total_gasto}</span>
-						<br>
-						<span class="informacoes-negrito">Número de meses registrados:</span> <span>${registro_meses.length}</span>
-					</p>
-				</div>
-				<div class="col-2 mb-1 centralizar-titulos-card-botao">
-				<div class="d-flex" style="height: 5rem;">
-					<div class="vr"></div>
-				</div>
-				</div>
-				<div class="col-5 centralizar-titulos-card-botao">
-					<p>
-						<span class="informacoes-negrito">Média consumo total:</span> <span>${media_total_consumo.toFixed(2)}m³</span>
-						<br>
-						<span class="informacoes-negrito">Média valores pagos:</span> <span>R$${media_total_valor.toFixed(2)}</span>
-						<br>
-						<span class="informacoes-negrito">Visualizar meses registrados:</span> <span><a class="mostrar-mais" onclick="buscarCalendario(); fecharDropdown(); gerarArrayConsumo(); gerarArrayGasto(); setMaxInput();" id="concluidas" href="#">Clique aqui</a></span>
-					</p>
-				</div>
-			</div>
-		</div>
-  	</p>
-  `
-}
-
-
 
 verificarMesesFuturos(anoSelecionado)
 totalizarValores()
