@@ -382,7 +382,7 @@ function gerarCard(informacoes, ano_anterior){
 	<br>
 	<div class="card w-100">
 		<div class="card-body">
-		<h3 class="card-title centralizar-titulos-card-botao">${informacoes.mes_nome}/${anoSelecionado}</h3>
+		<h3 class="card-title centralizar-titulos-card-botao">${informacoes.mes_nome}/${informacoes.ano}</h3>
 		<hr class="hr" />
 		<p class="card-text">
 			<h6 class="card-title">Informações mensais:</h6>
